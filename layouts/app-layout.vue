@@ -2,7 +2,7 @@
   <Head>
     <Title>Dashboard</Title>
   </Head>
-  <div class="min-h-screen bg-gray-100">
+  <div class="min-h-screen bg-muted-900">
     <Navigation/>
 
     <!-- Page Heading  -->
@@ -19,3 +19,12 @@
     </main>
   </div>
 </template>
+
+<style>
+
+body {
+  @apply w-full h-full bg-white dark:bg-muted-900;
+}
+
+
+</style>

@@ -1,11 +1,28 @@
 import {defineNuxtConfig} from "nuxt/config";
 
-// https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-    ssr: true,
+    app: {
+        head: {
+            htmlAttrs: {lang: 'en'},
+            // link: [{ rel: 'icon', href: '/logo.svg', type: 'image/svg+xml' }],
+            link: [
+                {
+                    rel: 'icon',
+                    href: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>❄️</text></svg>',
+                    type: 'image/svg+xml',
+                },
+            ],
+        },
+        pageTransition: {name: 'page', mode: 'out-in'},
+    },
+    ssr: false,
     modules: [
+        '@vueuse/nuxt',
         "@nuxtjs/tailwindcss",
         '@pinia/nuxt',
+        '@nuxtjs/i18n',
+        '@nuxt/image',
+        'nuxt-icon'
     ],
     runtimeConfig: {
         public: {
@@ -17,13 +34,23 @@ export default defineNuxtConfig({
     imports: {
         dirs: ["./utils", "./stores"],
     },
-    experimental: {
-        asyncContext: true,
+    devtools: {
+        enabled: false
     },
     tailwindcss: {
-        viewer: false,
+        viewer: false
     },
-    devtools: {
-        enabled: true
+    i18n: {
+        locales: [
+            {code: 'en', file: 'en-US.json', name: 'English 🇺🇸'},
+            {code: 'de', file: 'de-DE.json', name: 'Deutsch 🇩🇪'},
+            {code: 'es', file: 'es-ES.json', name: 'Español 🇪🇸'},
+            {code: 'fr', file: 'fr-FR.json', name: 'Français 🇫🇷'},
+            {code: 'it', file: 'it-IT.json', name: 'Italiano 🇮🇹'},
+            {code: 'pt', file: 'pt-BR.json', name: 'Português 🇧🇷'},
+        ],
+        langDir: 'locales',
+        defaultLocale: 'en',
+        strategy: 'no_prefix',
     },
 });
