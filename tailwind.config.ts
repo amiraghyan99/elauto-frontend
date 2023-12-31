@@ -1,4 +1,4 @@
-import type {Config} from 'tailwindcss';
+import type { Config } from 'tailwindcss';
 
 export default <Partial<Config>>{
     content: [
@@ -12,20 +12,20 @@ export default <Partial<Config>>{
     theme: {
         container: {
             center: true,
-            padding: '1rem',
+            padding: '1rem'
         },
         extend: {
             colors: {
                 primary: {
                     light: '#AE7DDD',
                     DEFAULT: process.env.PRIMARY_COLOR || '#7F54B2',
-                    dark: '#754fa3',
-                },
+                    dark: '#754fa3'
+                }
             },
             screens: {
-                '2xl': '1400px',
-            },
-        },
+                '2xl': '1400px'
+            }
+        }
     },
-    plugins: [require('@tailwindcss/typography')],
+    plugins: [require('@tailwindcss/typography')]
 };

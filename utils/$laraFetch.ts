@@ -1,55 +1,48 @@
-
-const CSRF_COOKIE = "XSRF-TOKEN";
-const CSRF_HEADER = "X-XSRF-TOKEN";
+const CSRF_COOKIE = 'XSRF-TOKEN';
+const CSRF_HEADER = 'X-XSRF-TOKEN';
 export const $laraFetch = $fetch.create({
-    credentials: "include",
-    async onRequest({request, options}) {
-        const {backendUrl, frontendUrl} = useRuntimeConfig().public;
+    credentials: 'include',
+    async onRequest({ request, options }) {
+        const { backendUrl, frontendUrl } = useRuntimeConfig().public;
 
         const event = process.nitro ? useEvent() : null;
 
-        let token = event
-            ? parseCookies(event)[CSRF_COOKIE]
-            : useCookie(CSRF_COOKIE).value;
+        let token = event ? parseCookies(event)[CSRF_COOKIE] : useCookie(CSRF_COOKIE).value;
 
         // on client initiate a csrf request and get it from the cookie set by laravel
-        if (
-            process.client &&
-            ["post", "delete", "put", "patch"].includes(
-                options?.method?.toLowerCase() ?? ""
-            )
-        ) {
+        if (process.client && ['post', 'delete', 'put', 'patch'].includes(options?.method?.toLowerCase() ?? '')) {
             token = await initCsrf();
         }
 
         let headers: any = {
-            accept: "application/json",
+            accept: 'application/json',
             ...options?.headers,
-            ...(token && {[CSRF_HEADER]: token}),
+            ...(token && {
+                [CSRF_HEADER]: token
+            })
         };
 
         if (process.server) {
-            const cookieString = event
-                ? event.headers.get("cookie")
-                : useRequestHeaders(["cookie"]).cookie;
+            const cookieString = event ? event.headers.get('cookie') : useRequestHeaders(['cookie']).cookie;
 
             headers = {
                 ...headers,
-                ...(cookieString && {cookie: cookieString}),
-                referer: frontendUrl,
+                ...(cookieString && {
+                    cookie: cookieString
+                }),
+                referer: frontendUrl
             };
         }
 
         options.headers = headers;
         options.baseURL = backendUrl;
     },
-    async onResponseError({response}) {
-
+    async onResponseError({ response }) {
         if ([500].includes(response.status)) {
-            console.error("[Laravel Error from $laraFetch]", response, response._data);
+            console.error('[Laravel Error from $laraFetch]', response, response._data);
         }
         if ([419].includes(response.status)) {
-            await refreshCsrf()
+            await refreshCsrf();
         }
     },
     async onRequestError() {
@@ -61,15 +54,15 @@ export const $laraFetch = $fetch.create({
 });
 
 async function initCsrf() {
-    return useCookie(CSRF_COOKIE).value || await refreshCsrf();
+    return useCookie(CSRF_COOKIE).value || (await refreshCsrf());
 }
 
 async function refreshCsrf() {
-    const {backendUrl} = useRuntimeConfig().public;
+    const { backendUrl } = useRuntimeConfig().public;
 
-    await $fetch("/sanctum/csrf-cookie", {
+    await $fetch('/sanctum/csrf-cookie', {
         baseURL: backendUrl,
-        credentials: "include",
+        credentials: 'include'
     });
 
     return useCookie(CSRF_COOKIE).value;

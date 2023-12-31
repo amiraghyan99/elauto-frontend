@@ -5,14 +5,11 @@ export type UseSubmitOptions = {
     onError?: (error: Error) => any;
 };
 
-export function useSubmit<T>(
-    submitter: () => Promise<T>,
-    options: UseSubmitOptions = {}
-) {
+export function useSubmit<T>(submitter: () => Promise<T>, options: UseSubmitOptions = {}) {
     const validationErrors = ref<ValidationErrors>({});
     const error = ref<Error | null>(null);
     const inProgress = ref(false);
-    const succeeded = ref<Boolean | null>(null);
+    const succeeded = ref<boolean | null>(null);
     const data = ref<T | null>(); // Include data as a ref
 
     async function submit(): Promise<T | undefined> {
@@ -25,7 +22,7 @@ export function useSubmit<T>(
             const result = await submitter();
             succeeded.value = true;
             options?.onSuccess?.(result);
-            data.value = result
+            data.value = result;
             return result;
         } catch (e: any) {
             error.value = e;

@@ -61,7 +61,6 @@ npm run dev
 > **Note**  
 > Currently, we recommend using `localhost` during local development of your backend and frontend to avoid CORS "Same-Origin" issues.
 
-
 ## Utilities
 
 You have the following auto imported utilities in the `utils` directory:
@@ -70,9 +69,9 @@ You have the following auto imported utilities in the `utils` directory:
 
 `$larafetch` is a wrapper around Nuxt's `$fetch` that makes it a breeze to make requests to your Laravel app:
 
-- Base URL is already set to `NUXT_PUBLIC_BACKEND_URL` value specified in your `.env` file.
-- Auto CSRF management.
-- Forwards the appropriate headers/cookies when in SSR context.
+-   Base URL is already set to `NUXT_PUBLIC_BACKEND_URL` value specified in your `.env` file.
+-   Auto CSRF management.
+-   Forwards the appropriate headers/cookies when in SSR context.
 
 > **Note**  
 > To take advantage of Nuxt3 SSR Hydration when making `GET` requests, you should use the `useLarafetch` composable rather than directly calling `$larafetch`, otherwise your app will make additional unnecessary requests once the page loads in your browser (The same also applies to Nuxt's regular `$fetch` and `useFetch`).
@@ -89,11 +88,13 @@ const { user, logout } = useAuth();
 </script>
 
 <template>
-  <div>
-    <p>{{ user.name }}</p>
+    <div>
+        <p>
+            {{ user.name }}
+        </p>
 
-    <button @click="logout">Sign out</button>
-  </div>
+        <button @click="logout">Sign out</button>
+    </div>
 </template>
 ```
 
@@ -103,15 +104,14 @@ const { user, logout } = useAuth();
 
 ```vue
 <script setup lang="ts">
-const { data: posts } = await useLarafetch("/api/posts");
+const { data: posts } = await useLarafetch('/api/posts');
 </script>
 
 <template>
-  <div>
-    <pre>{{ posts }}</pre>
-  </div>
+    <div>
+        <pre>{{ posts }}</pre>
+    </div>
 </template>
-
 ```
 
 ### useSubmit
@@ -121,24 +121,31 @@ const { data: posts } = await useLarafetch("/api/posts");
 ```vue
 <script setup lang="ts">
 const data = reactive({
-  title: "lorem ipsum",
-  body: "lorem ipsum",
+    title: 'lorem ipsum',
+    body: 'lorem ipsum'
 });
 
 const {
-  submit: createPost,
-  inProgress,
-  validationErrors,
-} = useSubmit(() => $larafetch("/api/posts", { method: "post", body: data }), {
-  onSuccess: (result) => console.log("Post created successfully", result),
-});
+    submit: createPost,
+    inProgress,
+    validationErrors
+} = useSubmit(
+    () =>
+        $larafetch('/api/posts', {
+            method: 'post',
+            body: data
+        }),
+    {
+        onSuccess: result => console.log('Post created successfully', result)
+    }
+);
 </script>
 
 <template>
-  <div>
-    <button @click="createPost" :disabled="inProgress">Create Post</button>
-    <pre>{{ validationErrors }}</pre>
-  </div>
+    <div>
+        <button @click="createPost" :disabled="inProgress">Create Post</button>
+        <pre>{{ validationErrors }}</pre>
+    </div>
 </template>
 ```
 
@@ -148,29 +155,31 @@ You can use any of the provided middlewares in your pages:
 
 ```vue
 <script setup lang="ts">
-definePageMeta({ middleware: ["auth"] });
+definePageMeta({
+    middleware: ['auth']
+});
 </script>
 
 <template>
-  <p>Only logged in users can access this page.</p>
+    <p>Only logged in users can access this page.</p>
 </template>
 ```
 
-- `auth`
+-   `auth`
 
-  Only logged in users can access the page, otherwise redirect to `/login` page.
+    Only logged in users can access the page, otherwise redirect to `/login` page.
 
-- `guest`
+-   `guest`
 
-  Only non-logged in users can access the page, otherwise redirect to the `/dashboard` page.
+    Only non-logged in users can access the page, otherwise redirect to the `/dashboard` page.
 
-- `verified`
+-   `verified`
 
-  Only logged in users with verified emails can access the page, otherwise redirect to `/login` page (if not logged in) or `/verify-email` page (if logged in).
+    Only logged in users with verified emails can access the page, otherwise redirect to `/login` page (if not logged in) or `/verify-email` page (if logged in).
 
-- `unverified`
+-   `unverified`
 
-  Only logged in users with unverified emails can access the page, otherwise redirect to `/login` page (if not logged in) or `/dashboard` page (if logged in). This is used only for the `/verify-email` page.
+    Only logged in users with unverified emails can access the page, otherwise redirect to `/login` page (if not logged in) or `/dashboard` page (if logged in). This is used only for the `/verify-email` page.
 
 ## License
 

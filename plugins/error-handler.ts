@@ -1,8 +1,7 @@
-import {FetchError} from "ofetch";
+import { FetchError } from 'ofetch';
 
-export default defineNuxtPlugin((nuxtApp) => {
+export default defineNuxtPlugin(nuxtApp => {
     nuxtApp.vueApp.config.errorHandler = (error, instance, info) => {
-
         if (!(error instanceof FetchError)) throw error;
 
         const status = error.response?.status ?? -1;
@@ -10,15 +9,11 @@ export default defineNuxtPlugin((nuxtApp) => {
         switch (status) {
             case 401:
             case 419:
-                navigateTo("/login");
+                navigateTo('/login');
                 break;
             case 409:
-                navigateTo("/verify-email");
+                navigateTo('/verify-email');
                 break;
         }
-
-    }
-
-})
-
-
+    };
+});
