@@ -88,13 +88,13 @@ const { user, logout } = useAuth();
 </script>
 
 <template>
-    <div>
-        <p>
-            {{ user.name }}
-        </p>
+	<div>
+		<p>
+			{{ user.name }}
+		</p>
 
-        <button @click="logout">Sign out</button>
-    </div>
+		<button @click="logout">Sign out</button>
+	</div>
 </template>
 ```
 
@@ -108,9 +108,9 @@ const { data: posts } = await useLarafetch('/api/posts');
 </script>
 
 <template>
-    <div>
-        <pre>{{ posts }}</pre>
-    </div>
+	<div>
+		<pre>{{ posts }}</pre>
+	</div>
 </template>
 ```
 
@@ -121,31 +121,31 @@ const { data: posts } = await useLarafetch('/api/posts');
 ```vue
 <script setup lang="ts">
 const data = reactive({
-    title: 'lorem ipsum',
-    body: 'lorem ipsum'
+	title: 'lorem ipsum',
+	body: 'lorem ipsum'
 });
 
 const {
-    submit: createPost,
-    inProgress,
-    validationErrors
+	submit: createPost,
+	inProgress,
+	validationErrors
 } = useSubmit(
-    () =>
-        $larafetch('/api/posts', {
-            method: 'post',
-            body: data
-        }),
-    {
-        onSuccess: result => console.log('Post created successfully', result)
-    }
+	() =>
+		$larafetch('/api/posts', {
+			method: 'post',
+			body: data
+		}),
+	{
+		onSuccess: result => console.log('Post created successfully', result)
+	}
 );
 </script>
 
 <template>
-    <div>
-        <button @click="createPost" :disabled="inProgress">Create Post</button>
-        <pre>{{ validationErrors }}</pre>
-    </div>
+	<div>
+		<button @click="createPost" :disabled="inProgress">Create Post</button>
+		<pre>{{ validationErrors }}</pre>
+	</div>
 </template>
 ```
 
@@ -156,12 +156,12 @@ You can use any of the provided middlewares in your pages:
 ```vue
 <script setup lang="ts">
 definePageMeta({
-    middleware: ['auth']
+	middleware: ['auth']
 });
 </script>
 
 <template>
-    <p>Only logged in users can access this page.</p>
+	<p>Only logged in users can access this page.</p>
 </template>
 ```
 

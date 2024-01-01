@@ -4,7 +4,7 @@
 </script>
 
 <template>
-    <NuxtLink to="/my-account" title="My Profile">
-        <Icon name="ion:person-outline" size="20" />
-    </NuxtLink>
+	<NuxtLink to="/my-account" title="My Profile">
+		<Icon name="ion:person-outline" size="20" />
+	</NuxtLink>
 </template>
